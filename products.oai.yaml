@@ -1,0 +1,536 @@
+openapi: "3.0.3"
+info:
+  title: Products API
+  description: Product microservice API. It allows a user to create, modify and delete a product.
+  contact:
+    name: Thomas Duclos
+    email: thomasduclos1012@gmail.com
+  version: "1.0"
+servers:
+  - url: localhost:9000
+    description: Local development server.
+  - url: https://10.21.32.18:9000
+    description: Same network development server.
+
+paths:
+  /products:
+    get:
+      description: Get a list of products.
+      parameters:
+        - $ref: "#/components/parameters/Page"
+        - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: A list of products, ~50 products per page.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+              examples:
+                Gants-Example:
+                  value:
+                    - uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                      name: "Gant T-DEX N500 [TechPro]"
+                      reference: "407255"
+                      supplier: "Foussier"
+                      description: "Gant de protection pour la manutention."
+                      image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                      variants:
+                        - size: "8"
+                          quantity: 3
+                        - size: "9"
+                          quantity: 0
+                        - size: "10"
+                          quantity: 15
+                        - size: "11"
+                          quantity: 1
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+    post:
+      description: Create a product.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+            examples:
+              Glove-Example:
+                value:
+                  uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                  name: "Gant T-DEX N500 [TechPro]"
+                  reference: "407255"
+                  supplier: "Foussier"
+                  description: "Gant de protection pour la manutention."
+                  image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                  variants:
+                    - size: "8"
+                      quantity: 3
+                    - size: "9"
+                      quantity: 0
+                    - size: "10"
+                      quantity: 15
+                    - size: "11"
+                      quantity: 1
+      responses:
+        "201":
+          description: The product has been successfully created.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              examples:
+                Gant-Example:
+                  value:
+                    uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                    name: "Gant T-DEX N500 [TechPro]"
+                    reference: "407255"
+                    supplier: "Foussier"
+                    description: "Gant de protection pour la manutention."
+                    image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                    variants:
+                      - size: "8"
+                        quantity: 3
+                      - size: "9"
+                        quantity: 0
+                      - size: "10"
+                        quantity: 15
+                      - size: "11"
+                        quantity: 1
+        "400":
+          description: Wrong request body.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "409":
+          description: A product already exists with the data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAlreadyExistsError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"          
+
+  /products/{uuid}:
+    get:
+      description: Get a product by its UUID.
+      parameters:
+        - name: uuid
+          in: path
+          description: The UUID of the product to retrieve.
+          required: true
+          schema:
+            type: string
+          example: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+      responses:
+        "200":
+          description: The product has been successfully retrieved.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              examples:
+                Glove-Example:
+                  value:
+                    uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                    name: "Gant T-DEX N500 [TechPro]"
+                    reference: "407255"
+                    supplier: "Foussier"
+                    description: "Gant de protection pour la manutention."
+                    image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                    variants:
+                      - size: "8"
+                        quantity: 3
+                      - size: "9"
+                        quantity: 0
+                      - size: "10"
+                        quantity: 15
+                      - size: "11"
+                        quantity: 1
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "404":
+          description: The product does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+    put:
+      description: Update a product.
+      parameters:
+        - name: uuid
+          in: path
+          description: The UUID of the product to update.
+          required: true
+          schema:
+            type: string
+          example: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Product"
+            examples:
+              Glove-Example:
+                value:
+                  uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                  name: "Gant T-DEX N500 [TechPro]"
+                  reference: "407255"
+                  supplier: "Foussier"
+                  description: "Gant de protection pour la manutention."
+                  image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                  variants:
+                    - size: "8"
+                      quantity: 3
+                    - size: "9"
+                      quantity: 0
+                    - size: "10"
+                      quantity: 15
+                    - size: "11"
+                      quantity: 1
+      responses:
+        "200":
+          description: The product has been successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              examples:
+                Glove-Example:
+                  value:
+                    uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                    name: "Gant T-DEX N500 [TechPro]"
+                    reference: "407255"
+                    supplier: "Foussier"
+                    description: "Gant de protection pour la manutention."
+                    image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                    variants:
+                      - size: "8"
+                        quantity: 3
+                      - size: "9"
+                        quantity: 0
+                      - size: "10"
+                        quantity: 15
+                      - size: "11"
+                        quantity: 1
+        "400":
+          description: Wrong request body.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "404":
+          description: The product does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "409":
+          description: A product already exists with the data.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProductAlreadyExistsError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+    patch:
+      description: Update the variants of a product.
+      parameters:
+        - name: uuid
+          in: path
+          description: The UUID of the product to update.
+          required: true
+          schema:
+            type: string
+          example: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProductVariant"
+      responses:
+        "200":
+          description: The product has been successfully updated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+              examples:
+                Glove-Example:
+                  value:
+                    uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                    name: "Gant T-DEX N500 [TechPro]"
+                    reference: "407255"
+                    supplier: "Foussier"
+                    description: "Gant de protection pour la manutention."
+                    image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                    variants:
+                      - size: "8"
+                        quantity: 3
+                      - size: "9"
+                        quantity: 0
+                      - size: "10"
+                        quantity: 15
+                      - size: "11"
+                        quantity: 1
+        "400":
+          description: Wrong request body.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "404":
+          description: The product does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+    delete:
+      description: Delete a product.
+      parameters:
+        - name: uuid
+          in: path
+          description: The UUID of the product to delete.
+          required: true
+          schema:
+            type: string
+          example: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+      responses:
+        "204":
+          description: The product has been successfully deleted.
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "404":
+          description: The product does not exist.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+  
+components:
+  schemas:
+    GeneralError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      example:
+        code: 500
+        message: "Internal server error"
+    ProductAlreadyExistsError:
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+        conflicts:
+          type: array
+          items:
+            type: string
+      example:
+        code: 409
+        message: "A product already exists with the data."
+        conflicts:
+          - "name"
+          - "reference"
+          - "supplier"
+    ProductVariant:
+      type: object
+      properties:
+        size:
+          type: string
+        color:
+          type: string
+          nullable: true
+        length:
+          type: integer
+          nullable: true
+        quantity:
+          type: integer
+          nullable: true
+      example:
+        size: "8"
+        quantity: 3
+    Product:
+      type: object
+      properties:
+        uuid:
+          type: string
+        name:
+          type: string
+        reference:
+          type: string
+        line: 
+          type: string
+          nullable: true
+        supplier:
+          type: string
+        description:
+          type: string
+        image-url:
+          type: string
+        variants:
+          type: array
+          items:
+            type: object
+            properties:
+              size:
+                type: string
+              color:
+                type: string
+                nullable: true
+              length:
+                type: integer
+                nullable: true
+              quantity:
+                type: integer
+                nullable: true
+      example:
+        uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+        name: "Gant T-DEX N500 [TechPro]"
+        reference: "407255"
+        supplier: "Foussier"
+        description: "Gant de protection pour la manutention."
+        image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+        variants:
+          - size: "8"
+            quantity: 3
+          - size: "9"
+            quantity: 0
+          - size: "10"
+            quantity: 15
+          - size: "11"
+            quantity: 1
+  parameters:
+    Page: 
+      name: page
+      in: query
+      description: The page number to retrieve.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 1
+        default: 1
+      example: 1
+    PageSize:
+      name: pageSize
+      in: query
+      description: The number of products per page.
+      required: false
+      schema:
+        type: integer
+        format: int32
+        minimum: 10
+        maximum: 100
+        default: 50
+      example: 50
+
