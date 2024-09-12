@@ -41,6 +41,16 @@ func NewRouter(server *simplerest.Server) (*router, error) {
 	return router, nil
 }
 
+// Serve enables the http server
+func (r *router) Serve() error {
+	return r.server.Serve()
+}
+
+// Close stops the http server
+func (r *router) Close() error {
+	return r.server.Close()
+}
+
 func handleProducts(w http.ResponseWriter, req *http.Request, params simplerest.Parameters) error {
 	return nil
 }
