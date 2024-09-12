@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	stockproducts "github.com/BragdonD/stock-products"
 	simplerest "github.com/bragdond/simple-rest"
+	stockproducts "github.com/bragdond/stock-products"
 )
 
 func main() {
