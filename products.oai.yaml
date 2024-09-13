@@ -423,6 +423,52 @@ paths:
           example: "Gant T-DEX N500 [TechPro]"
         - $ref: "#/components/parameters/Page"
         - $ref: "#/components/parameters/PageSize"
+      responses:
+        "200":
+          description: A list of products matching the search query, ~50 products per page.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Product"
+              examples:
+                Gants-Example:
+                  value:
+                    - uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
+                      name: "Gant T-DEX N500 [TechPro]"
+                      reference: "407255"
+                      supplier: "Foussier"
+                      description: "Gant de protection pour la manutention."
+                      image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
+                      variants:
+                        - size: "8"
+                          quantity: 3
+                        - size: "9"
+                          quantity: 0
+                        - size: "10"
+                          quantity: 15
+                        - size: "11"
+                          quantity: 1
+        "401":
+          description: The client is not currently authenticated.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "403":
+          description: The client is authenticated but does not have the necessary permissions.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+        "500":
+          description: An error occurred.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GeneralError"
+    
 
 components:
   schemas:
@@ -482,7 +528,7 @@ components:
           type: string
         reference:
           type: string
-        line: 
+        line:
           type: string
           nullable: true
         supplier:
@@ -506,7 +552,6 @@ components:
                 nullable: true
               quantity:
                 type: integer
-                nullable: true
       example:
         uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
         name: "Gant T-DEX N500 [TechPro]"
