@@ -39,13 +39,9 @@ paths:
                       image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
                       variants:
                         - size: "8"
-                          quantity: 3
                         - size: "9"
-                          quantity: 0
                         - size: "10"
-                          quantity: 15
                         - size: "11"
-                          quantity: 1
         "401":
           description: The client is not currently authenticated.
           content:
@@ -108,13 +104,9 @@ paths:
                     image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
                     variants:
                       - size: "8"
-                        quantity: 3
                       - size: "9"
-                        quantity: 0
                       - size: "10"
-                        quantity: 15
                       - size: "11"
-                        quantity: 1
         "400":
           description: Wrong request body.
           content:
@@ -175,13 +167,9 @@ paths:
                     image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
                     variants:
                       - size: "8"
-                        quantity: 3
                       - size: "9"
-                        quantity: 0
                       - size: "10"
-                        quantity: 15
                       - size: "11"
-                        quantity: 1
         "401":
           description: The client is not currently authenticated.
           content:
@@ -258,13 +246,9 @@ paths:
                     image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
                     variants:
                       - size: "8"
-                        quantity: 3
                       - size: "9"
-                        quantity: 0
                       - size: "10"
-                        quantity: 15
                       - size: "11"
-                        quantity: 1
         "400":
           description: Wrong request body.
           content:
@@ -335,13 +319,9 @@ paths:
                     image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
                     variants:
                       - size: "8"
-                        quantity: 3
                       - size: "9"
-                        quantity: 0
                       - size: "10"
-                        quantity: 15
                       - size: "11"
-                        quantity: 1
         "400":
           description: Wrong request body.
           content:
@@ -443,13 +423,9 @@ paths:
                       image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
                       variants:
                         - size: "8"
-                          quantity: 3
                         - size: "9"
-                          quantity: 0
                         - size: "10"
-                          quantity: 15
                         - size: "11"
-                          quantity: 1
         "401":
           description: The client is not currently authenticated.
           content:
@@ -513,12 +489,8 @@ components:
         length:
           type: integer
           nullable: true
-        quantity:
-          type: integer
-          nullable: true
       example:
         size: "8"
-        quantity: 3
     Product:
       type: object
       properties:
@@ -539,19 +511,8 @@ components:
           type: string
         variants:
           type: array
-          items:
-            type: object
-            properties:
-              size:
-                type: string
-              color:
-                type: string
-                nullable: true
-              length:
-                type: integer
-                nullable: true
-              quantity:
-                type: integer
+          items: 
+            $ref: "#/components/schemas/ProductVariant"
       example:
         uuid: 'e45aafd5-8cfb-4c2a-b127-14d9574255f3'
         name: "Gant T-DEX N500 [TechPro]"
@@ -561,13 +522,9 @@ components:
         image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
         variants:
           - size: "8"
-            quantity: 3
           - size: "9"
-            quantity: 0
           - size: "10"
-            quantity: 15
           - size: "11"
-            quantity: 1
   parameters:
     Page: 
       name: page
