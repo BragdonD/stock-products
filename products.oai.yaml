@@ -509,6 +509,9 @@ components:
           type: string
         image-url:
           type: string
+        price:
+          type: number
+          format: float
         variants:
           type: array
           items: 
@@ -518,6 +521,7 @@ components:
         name: "Gant T-DEX N500 [TechPro]"
         reference: "407255"
         supplier: "Foussier"
+        price: 3.70
         description: "Gant de protection pour la manutention."
         image-url: "https://www.adsm-fermetures/images/e45aafd5-8cfb-4c2a-b127-14d9574255f3.jpg"
         variants:
