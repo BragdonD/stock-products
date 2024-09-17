@@ -1,6 +1,7 @@
 package stockproducts
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -10,14 +11,18 @@ import (
 // router is the structure that holds all the datas relative to
 // HTTP requests.
 type router struct {
-	server *simplerest.Server
+	server  *simplerest.Server
+	usecase *Usecase
+	ctx     context.Context
 }
 
 // NewRouter initializes a new router for the given server and registers
 // the necessary routes for handling product-related HTTP requests.
 func NewRouter(server *simplerest.Server) (*router, error) {
 	router := &router{
-		server: server,
+		server:  server,
+		usecase: &Usecase{},
+		ctx:     context.Background(),
 	}
 
 	if err := router.server.HandleFunc("/products",

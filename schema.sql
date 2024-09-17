@@ -1,6 +1,6 @@
 CREATE TABLE "Products" (
     "uuid" uuid NOT NULL,
-    "name" varchar(255) NOT NULL,
+    "name" varchar(255) UNIQUE NOT NULL,
     "reference" varchar(255) NOT NULL,
     "line" varchar(255) NOT NULL,
     "supplier" varchar(255) NOT NULL,

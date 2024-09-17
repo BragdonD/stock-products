@@ -7,7 +7,75 @@ package stockproducts
 
 import (
 	"context"
+
+	"github.com/jackc/pgx/v5/pgtype"
 )
+
+const createProduct = `-- name: CreateProduct :one
+INSERT INTO "Products" 
+("name", "reference", "line", "supplier", "description", "price", "image-url") 
+VALUES ($1, $2, $3, $4, $5, $6, $7) 
+RETURNING uuid, name, reference, line, supplier, description, "image-url", price, "created-at", "updated-at"
+`
+
+type CreateProductParams struct {
+	Name        string
+	Reference   string
+	Line        string
+	Supplier    string
+	Description string
+	Price       pgtype.Numeric
+	ImageUrl    string
+}
+
+func (q *Queries) CreateProduct(ctx context.Context, arg CreateProductParams) (Product, error) {
+	row := q.db.QueryRow(ctx, createProduct,
+		arg.Name,
+		arg.Reference,
+		arg.Line,
+		arg.Supplier,
+		arg.Description,
+		arg.Price,
+		arg.ImageUrl,
+	)
+	var i Product
+	err := row.Scan(
+		&i.Uuid,
+		&i.Name,
+		&i.Reference,
+		&i.Line,
+		&i.Supplier,
+		&i.Description,
+		&i.ImageUrl,
+		&i.Price,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
+
+const getProduct = `-- name: GetProduct :one
+SELECT uuid, name, reference, line, supplier, description, "image-url", price, "created-at", "updated-at" FROM "Products"
+WHERE "name" = $1
+`
+
+func (q *Queries) GetProduct(ctx context.Context, name string) (Product, error) {
+	row := q.db.QueryRow(ctx, getProduct, name)
+	var i Product
+	err := row.Scan(
+		&i.Uuid,
+		&i.Name,
+		&i.Reference,
+		&i.Line,
+		&i.Supplier,
+		&i.Description,
+		&i.ImageUrl,
+		&i.Price,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
+}
 
 const listProducts = `-- name: ListProducts :many
 SELECT uuid, name, reference, line, supplier, description, "image-url", price, "created-at", "updated-at" FROM "Products"
